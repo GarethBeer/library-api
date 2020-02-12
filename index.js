@@ -1,7 +1,11 @@
+const mongoose = require('mongoose');
 const app = require('./src/app');
 
-const APP_PORT = 3000;
+const url = process.env.DATABASE_CONN;
 
-app.listen(APP_PORT, () => {
-  console.log(`Now serving your Express app at http://localhost:${APP_PORT}`); // eslint-disable-line
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
+  app.listen(3000, () => {
+    // eslint-disable-next-line no-console
+    console.log('App listening on port 3000');
+  });
 });
