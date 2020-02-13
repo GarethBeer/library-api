@@ -63,10 +63,27 @@ describe('Users', () => {
           expect(res.body.errors.email).toBe('Invalid email address');
         });
 
-      User.countDocuments({}, (err, doc) => {
-        expect(doc.length).toBe(0);
+      User.countDocuments({}, function(err, count) {
+        console.log(count);
+        expect(count).toBe(0);
         done();
       });
+    });
+
+    it('errors if password is not 8 or more characters long', done => {
+      request(app)
+        .post('/users')
+        .send({
+          firstName: 'Gareth',
+          lastName: 'Beer',
+          email: 'hellow@hotmail.com',
+          password: 'blah',
+        })
+        .then(res => {
+          expect(res.status).toBe(400);
+          expect(res.body.errors.password).toBe('Password must be at least 8 characters long');
+          done();
+        });
     });
   });
 });

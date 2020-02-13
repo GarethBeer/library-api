@@ -1,4 +1,3 @@
-const isEmail = require('isemail');
 const User = require('../models/User');
 
 exports.create = (req, res) => {
@@ -17,9 +16,11 @@ exports.create = (req, res) => {
     .catch(error => {
       if (error.name === 'ValidationError') {
         const emailError = error.errors.email ? error.errors.email.message : null;
+        const passwordError = error.errors.password ? error.errors.password.message : null;
         res.status(400).json({
           errors: {
             email: emailError,
+            password: passwordError,
           },
         });
       } else {
