@@ -48,5 +48,25 @@ describe('Users', () => {
           });
         });
     });
+
+    it('it errors if not a vaild email is entered', done => {
+      request(app)
+        .post('/users')
+        .send({
+          firstName: 'Gareth',
+          lastName: 'Beer',
+          email: 'thisisntavalidemail@',
+          password: 'blahblah123',
+        })
+        .then(res => {
+          expect(res.status).toBe(400);
+          expect(res.body.errors.email).toBe('Invalid email address');
+        });
+
+      User.countDocuments({}, (err, doc) => {
+        expect(doc.length).toBe(0);
+        done();
+      });
+    });
   });
 });
